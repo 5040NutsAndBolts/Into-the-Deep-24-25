@@ -105,7 +105,7 @@ public class Camera extends OpenCvPipeline
             Core.inRange(workingMat,new Scalar(112,180,150),new Scalar(125,255,255),workingMat);
         else if(color == TeamColor.red)
             Core.inRange(workingMat,new Scalar(0,150,100),new Scalar(255,255,255),workingMat);
-        else throw new RuntimeException("Invalid / No Color");
+        else Core.inRange(workingMat, new Scalar (0,0,0), new Scalar(0,0,0), workingMat);
 
         // Creates a list for all contoured objects the camera will find
         List<MatOfPoint> contoursList = new ArrayList<>();

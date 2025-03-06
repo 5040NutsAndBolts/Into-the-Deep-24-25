@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Autos;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.HelperClasses.Camera;
 import org.firstinspires.ftc.teamcode.RobotOpMode;
 
 @Disabled
@@ -9,6 +10,7 @@ public class AutoOpMode extends RobotOpMode {
     private boolean lastParkButton = false;
     protected boolean parkToggle = true;
     private int autoDelaySeconds;
+    private Camera cam;
 
     public void togglePark(boolean input) {
         if(lastParkButton != input && input)
@@ -20,20 +22,33 @@ public class AutoOpMode extends RobotOpMode {
     public void adjustDelay (boolean decrease, boolean increase) {
         if(increase && decrease)
             return;
-        if (decrease != lastDecr && decrease)
+        if (decrease != lastDecr && decrease && autoDelaySeconds >= 0)
             autoDelaySeconds--;
-        if (increase != lastIncr && increase)
+        if (increase != lastIncr && increase && autoDelaySeconds <= 25)
             autoDelaySeconds++;
         lastDecr = decrease;
         lastIncr = increase;
     }
 
     @Override
+    public void init() {
+        super.init();
+        cam = new Camera(hardwareMap);
+    }
+
+    @Override
     public void init_loop() {
         togglePark(gamepad1.dpad_left);
         odo.resetOdometry();
-        adjustDelay(gamepad1.dpad_down, gamepad1.dpad_up);
+        adjustDelay(gamepad1.a, gamepad1.y);
         telemetry.addLine("CURRENT DELAY: " + autoDelaySeconds);
+        telemetry.addLine("PARKTOGGLE: " + parkToggle);
+        if (gamepad1.dpad_up)
+            pTeamColor = TeamColor.red;
+        else if (gamepad1.dpad_down)
+            pTeamColor = TeamColor.blue;
+        cam.color = pTeamColor;
+        telemetry.addLine("TEAM COLOR: " + pTeamColor);
         telemetry.update();
     }
 
@@ -43,11 +58,6 @@ public class AutoOpMode extends RobotOpMode {
         telemetry.addLine("DRIVETRAIN:\n"+drivetrain.toString());
         telemetry.addLine("PARK: " + parkToggle);
         telemetry.update();
-    }
-
-    @Override
-    public void auto180(boolean input) {
-        throw new UnsupportedOperationException("Not available for autonomous, may cause major issues");
     }
 
     @Override

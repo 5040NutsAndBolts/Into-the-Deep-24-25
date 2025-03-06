@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.HelperClasses.ColourSensor;
 
 @Disabled
 public class RobotOpMode extends OpMode {
-    //protected Blinkin blinkin;
+    protected Blinkin blinkin;
     protected Drivetrain drivetrain;
     protected ChamberFlywheelDeposit chamberWheel;
     protected SubmersibleFlywheelIntake subWheel;
@@ -34,7 +34,7 @@ public class RobotOpMode extends OpMode {
         chamberWheel = new ChamberFlywheelDeposit(hardwareMap);
         odo = new Odometry(hardwareMap);
         scissor = new Scissor(hardwareMap);
-        //blinkin = new Blinkin(hardwareMap);
+        blinkin = new Blinkin(hardwareMap);
     }
 
     @Override
@@ -48,18 +48,6 @@ public class RobotOpMode extends OpMode {
 
         telemetry.addLine("TEAM COLOR: " + subWheel.getTeamColour());
         telemetry.update();
-    }
-
-    public void auto180 (boolean input) {
-        if(odo != null) {
-            if(input){
-                odo.resetOdometry();
-                while (odo.centerE < 8000) {
-                    drivetrain.drive(0, 0, 1);
-                    odo.updateOdoPosition();
-                }
-            } else return;
-        }else throw new NullPointerException("Odometry object is null");
     }
 
     //Leave empty
