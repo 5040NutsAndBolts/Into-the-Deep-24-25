@@ -40,8 +40,6 @@ public class TwoDriverTeleop extends RobotOpMode {
 		subWheel.tiltCarriage(gamepad2.right_bumper, gamepad2.left_bumper);
 		subWheel.toggleAutoSpitOverride(gamepad2.a);
 
-		telemetry.addLine("Scissor:\n" + scissor.toString() + "\n\n");
-		telemetry.addLine("Chamber Wheel:\n" + chamberWheel.toString() + "\n\n");
 		telemetry.addLine("SLOWMODE: " + drivetrain.isSlow());
 		telemetry.addLine("AUTO SPIT: " + subWheel.willAutoSpit());
 		telemetry.update();

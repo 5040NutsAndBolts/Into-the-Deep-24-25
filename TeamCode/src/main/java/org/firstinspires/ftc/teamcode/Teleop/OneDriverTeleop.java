@@ -21,16 +21,6 @@ public class OneDriverTeleop extends RobotOpMode {
 		subWheel.tiltCarriage(gamepad1.a, gamepad1.b);
 		subWheel.toggleAutoSpitOverride(gamepad2.x);
 
-		/*if (pTeamColor == TeamColor.red)
-			blinkin.turnRed();
-		else if (pTeamColor == TeamColor.blue)
-			blinkin.turnBlue();
-		else if (pTeamColor == TeamColor.noColor) {
-			blinkin.turnYellow();
-		} else {
-			blinkin.turnOrange();
-		}*/
-
 		telemetry.addLine("SLOWMODE: " + drivetrain.isSlow());
 		telemetry.update();
 	}

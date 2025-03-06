@@ -18,6 +18,8 @@ public class AutoOpMode extends RobotOpMode {
 
     private boolean lastDecr, lastIncr;
     public void adjustDelay (boolean decrease, boolean increase) {
+        if(increase && decrease)
+            return;
         if (decrease != lastDecr && decrease)
             autoDelaySeconds--;
         if (increase != lastIncr && increase)
