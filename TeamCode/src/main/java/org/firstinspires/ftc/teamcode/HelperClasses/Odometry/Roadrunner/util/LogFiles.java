@@ -17,7 +17,7 @@ import com.qualcomm.robotcore.util.WebHandlerManager;
 import org.firstinspires.ftc.ftccommon.external.WebHandlerRegistrar;
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 import org.firstinspires.ftc.teamcode.HelperClasses.Odometry.Roadrunner.drive.DriveConstants;
-import org.firstinspires.ftc.teamcode.HelperClasses.Odometry.Roadrunner.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.HelperClasses.Odometry.Roadrunner.drive.RoadrunnerMecanumDrive;
 import org.firstinspires.ftc.teamcode.HelperClasses.Odometry.Roadrunner.drive.StandardTrackingWheelLocalizer;
 
 import java.io.File;
@@ -65,13 +65,13 @@ public final class LogFiles {
         public double maxAngVel = DriveConstants.MAX_ANG_VEL;
         public double maxAngAccel = DriveConstants.MAX_ANG_ACCEL;
 
-        public double mecTransP = SampleMecanumDrive.TRANSLATIONAL_PID.kP;
-        public double mecTransI = SampleMecanumDrive.TRANSLATIONAL_PID.kI;
-        public double mecTransD = SampleMecanumDrive.TRANSLATIONAL_PID.kD;
-        public double mecHeadingP = SampleMecanumDrive.HEADING_PID.kP;
-        public double mecHeadingI = SampleMecanumDrive.HEADING_PID.kI;
-        public double mecHeadingD = SampleMecanumDrive.HEADING_PID.kD;
-        public double mecLateralMultiplier = SampleMecanumDrive.LATERAL_MULTIPLIER;
+        public double mecTransP = RoadrunnerMecanumDrive.TRANSLATIONAL_PID.kP;
+        public double mecTransI = RoadrunnerMecanumDrive.TRANSLATIONAL_PID.kI;
+        public double mecTransD = RoadrunnerMecanumDrive.TRANSLATIONAL_PID.kD;
+        public double mecHeadingP = RoadrunnerMecanumDrive.HEADING_PID.kP;
+        public double mecHeadingI = RoadrunnerMecanumDrive.HEADING_PID.kI;
+        public double mecHeadingD = RoadrunnerMecanumDrive.HEADING_PID.kD;
+        public double mecLateralMultiplier = RoadrunnerMecanumDrive.LATERAL_MULTIPLIER;
 
         public double trackingTicksPerRev = StandardTrackingWheelLocalizer.TICKS_PER_REV;
         public double trackingWheelRadius = StandardTrackingWheelLocalizer.WHEEL_RADIUS;
