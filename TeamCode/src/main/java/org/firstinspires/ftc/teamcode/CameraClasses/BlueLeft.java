@@ -1,18 +1,12 @@
 package org.firstinspires.ftc.teamcode.CameraClasses;
 
 import com.acmerobotics.dashboard.FtcDashboard;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.Autos.AutoOpMode;
 import org.firstinspires.ftc.teamcode.HelperClasses.Camera;
-import org.firstinspires.ftc.teamcode.HelperClasses.Odometry;
+import org.firstinspires.ftc.teamcode.HelperClasses.Odometry.Odometry;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.openftc.easyopencv.OpenCvCamera;
-import org.openftc.easyopencv.OpenCvCameraFactory;
-import org.openftc.easyopencv.OpenCvCameraRotation;
-import org.openftc.easyopencv.OpenCvWebcam;
 
 @Disabled
 public class BlueLeft extends AutoOpMode

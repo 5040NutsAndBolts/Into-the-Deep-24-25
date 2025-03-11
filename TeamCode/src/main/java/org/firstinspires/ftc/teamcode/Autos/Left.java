@@ -8,14 +8,6 @@ public class Left extends AutoOpMode {
 	@Override
 	public void loop() {
 		super.loop();
-		if(parkToggle) {
-			while(odo.centerE > -20000) {
-				drivetrain.drive(0, -.8, 0);
-				odo.updateOdoPosition();
-				telemetry.addLine("PARK");
-				updateTelemetry();
-			}
-			requestOpModeStop();
-		}
+
 	}
 }

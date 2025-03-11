@@ -7,6 +7,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 
 import org.firstinspires.ftc.teamcode.HelperClasses.Camera;
+import org.firstinspires.ftc.teamcode.HelperClasses.TestOpModes.FTCConstants;
 import org.firstinspires.ftc.teamcode.RobotOpMode;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -22,7 +23,7 @@ public class VisionTest extends LinearOpMode
     {
         //camera settup
         Camera webcam = new Camera(hardwareMap);
-        webcam.color = RobotOpMode.TeamColor.blue;//400c 50h
+        webcam.color = FTCConstants.TeamColor.blue;//400c 50h
         FtcDashboard dashboard = FtcDashboard.getInstance();
         Telemetry dashboardTelemetry = dashboard.getTelemetry();
 

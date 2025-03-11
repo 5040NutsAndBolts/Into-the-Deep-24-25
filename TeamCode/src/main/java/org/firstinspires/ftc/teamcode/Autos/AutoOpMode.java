@@ -3,6 +3,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.HelperClasses.Camera;
+import org.firstinspires.ftc.teamcode.HelperClasses.Odometry.Odometry;
 import org.firstinspires.ftc.teamcode.RobotOpMode;
 
 @Disabled
@@ -10,6 +11,7 @@ public class AutoOpMode extends RobotOpMode {
     private boolean lastParkButton = false;
     protected boolean parkToggle = false    ;
     private int autoDelaySeconds;
+    protected Odometry odo;
 
     public void togglePark(boolean input) {
         if(lastParkButton != input && input)
@@ -30,19 +32,25 @@ public class AutoOpMode extends RobotOpMode {
     }
 
     @Override
-    public void init_loop() {
-        togglePark(gamepad1.dpad_left);
-        odo.resetOdometry();
-        adjustDelay(gamepad1.a, gamepad1.y);
-        telemetry.addLine("CURRENT DELAY: " + autoDelaySeconds);
-        telemetry.addLine("PARKTOGGLE: " + parkToggle);
-        telemetry.update();
+    public void init() {
+        super.init();
+        odo = new Odometry(hardwareMap);
     }
 
-    protected void updateTelemetry() {
-        telemetry.addLine("ODO:\n"+odo.toString());
-        telemetry.addLine("PARK: " + parkToggle);
-        telemetry.update();
+    @Override
+    public void init_loop() {
+        togglePark(gamepad1.dpad_left);
+        adjustDelay(gamepad1.a, gamepad1.y);
+        odo.reset();
+        addTelemetry("PARK: " + parkToggle);
+        addTelemetry("DELAY: " + autoDelaySeconds);
+        updateTelemetry();
+    }
+
+    protected void updateAutoTelemetry() {
+        addTelemetry("ODO:\n"+odo.toString());
+        addTelemetry("PARK: " + parkToggle);
+        updateTelemetry();
     }
 
     @Override

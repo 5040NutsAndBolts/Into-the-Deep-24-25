@@ -5,8 +5,7 @@ import androidx.annotation.NonNull;
 import com.qualcomm.robotcore.hardware.*;
 
 import org.firstinspires.ftc.teamcode.HelperClasses.ColourSensor;
-import org.firstinspires.ftc.teamcode.RobotOpMode;
-import org.firstinspires.ftc.teamcode.RobotOpMode.TeamColor;
+import org.firstinspires.ftc.teamcode.HelperClasses.TestOpModes.FTCConstants;
 
 public class SubmersibleFlywheelIntake {
 	private final CRServo leftIntakeServo, rightIntakeServo;
@@ -14,6 +13,7 @@ public class SubmersibleFlywheelIntake {
 	private final ColourSensor colourSensor;
 	private boolean autoSpitOverride;
 	private boolean spitOut = false;
+	private FTCConstants.TeamColor teamColor;
 
 	public SubmersibleFlywheelIntake(@NonNull HardwareMap hardwareMap) {
 		leftIntakeServo = hardwareMap.get(CRServo.class, "Left Scissor Intake Servo");
@@ -23,16 +23,16 @@ public class SubmersibleFlywheelIntake {
 		colourSensor = new ColourSensor(hardwareMap, "Scissor Colour Sensor");
 	}
 
-	public void setTeamColour (@NonNull TeamColor in) {
-		RobotOpMode.pTeamColor = in;
+	public void setTeamColour (@NonNull FTCConstants.TeamColor in) {
+		teamColor = in;
 	}
 
-	public TeamColor getTeamColour () {
-		return RobotOpMode.pTeamColor;
+	public FTCConstants.TeamColor getTeamColour () {
+		return teamColor;
 	}
 
 	public void spin (boolean in, boolean out) {
-		if(colourSensor.getBest() == (RobotOpMode.pTeamColor == TeamColor.red ? TeamColor.blue : TeamColor.red) && !autoSpitOverride) // If colour sensor sees the opposite teams' colour, spit out
+		if(colourSensor.getBest().equals((teamColor.equals( FTCConstants.TeamColor.red) ? FTCConstants.TeamColor.blue : FTCConstants.TeamColor.red)) && !autoSpitOverride) // If colour sensor sees the opposite teams' colour, spit out
 			spitOut = true;
 
 		if(!autoSpitOverride && spitOut){

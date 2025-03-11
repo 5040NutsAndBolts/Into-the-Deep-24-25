@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.HelperClasses.TestOpModes.FTCConstants;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -16,7 +17,7 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
-import org.firstinspires.ftc.teamcode.RobotOpMode.TeamColor;
+import org.firstinspires.ftc.teamcode.HelperClasses.TestOpModes.FTCConstants.*;
 import org.openftc.easyopencv.OpenCvWebcam;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class Camera extends OpenCvPipeline
     public static double score = 0;
     public static double height = 0;
     public static double width = 0;
-    public TeamColor color;
+    public FTCConstants.TeamColor color;
     OpenCvWebcam webcam;
 
     // Coordinate position of the top left corner of the selected rectangle

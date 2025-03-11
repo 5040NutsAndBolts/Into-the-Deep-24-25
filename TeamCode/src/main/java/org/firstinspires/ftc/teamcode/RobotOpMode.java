@@ -1,57 +1,56 @@
 package org.firstinspires.ftc.teamcode;
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.HelperClasses.Blinkin;
-import org.firstinspires.ftc.teamcode.HelperClasses.Odometry;
+import org.firstinspires.ftc.teamcode.HelperClasses.Odometry.Odometry;
+import org.firstinspires.ftc.teamcode.HelperClasses.TestOpModes.FTCConstants;
 import org.firstinspires.ftc.teamcode.Mechanisms.Drivetrain;
 import org.firstinspires.ftc.teamcode.Mechanisms.Scissor;
 import org.firstinspires.ftc.teamcode.Mechanisms.SubmersibleFlywheelIntake;
 import org.firstinspires.ftc.teamcode.Mechanisms.ChamberFlywheelDeposit;
-import org.firstinspires.ftc.teamcode.HelperClasses.ColourSensor;
+import java.util.ArrayList;
 
 @Disabled
 public class RobotOpMode extends OpMode {
-    protected Blinkin blinkin;
     protected Drivetrain drivetrain;
-    protected ChamberFlywheelDeposit chamberWheel;
-    protected SubmersibleFlywheelIntake subWheel;
-    protected Scissor scissor;
-	protected Odometry odo;
 
-    public enum TeamColor {
-        red, blue, noColor
-    }
-
-    public static TeamColor pTeamColor = TeamColor.noColor;
+    protected Telemetry dashboard;
+    protected static FTCConstants.TeamColor pTeamColor = FTCConstants.TeamColor.noColor;
 
     @Override
     public void init() {
-	    drivetrain = new Drivetrain (hardwareMap);
-        subWheel = new SubmersibleFlywheelIntake(hardwareMap);
-        chamberWheel = new ChamberFlywheelDeposit(hardwareMap);
-        odo = new Odometry(hardwareMap);
-        scissor = new Scissor(hardwareMap);
-        blinkin = new Blinkin(hardwareMap);
+        dashboard = FtcDashboard.getInstance().getTelemetry();
+       drivetrain = new Drivetrain (hardwareMap);
     }
 
     @Override
     public void init_loop() {
         if (gamepad1.dpad_up)
-            pTeamColor = TeamColor.red;
+            pTeamColor = FTCConstants.TeamColor.red;
         else if (gamepad1.dpad_down)
-            pTeamColor = TeamColor.blue;
+            pTeamColor = FTCConstants.TeamColor.blue;
 
-        subWheel.setTeamColour(pTeamColor);
 
-        telemetry.addLine("TEAM COLOR: " + subWheel.getTeamColour());
+        telemetry.addLine("TEAM COLOR: " +pTeamColor);
+        dashboard.addLine("TEAM COLOR: " +pTeamColor);
+        telemetry.update();
+        dashboard.update();
+    }
+
+    protected void addTelemetry (String data) {
+        dashboard.addLine(data);
+        telemetry.addLine(data);
+    }
+
+    protected void updateTelemetry() {
+        dashboard.update();
         telemetry.update();
     }
 
     //Leave empty
-    @Override public void loop() {
-
-    }
+    @Override public void loop() {}
 }

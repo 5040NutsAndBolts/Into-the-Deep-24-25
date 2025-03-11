@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Mechanisms.SubmersibleFlywheelIntake;
-import org.firstinspires.ftc.teamcode.RobotOpMode.TeamColor;
 
 @TeleOp( name = "ScissorTest")
 public class ScissorTest extends OpMode {
@@ -12,7 +11,7 @@ public class ScissorTest extends OpMode {
 	@Override
 	public void init() {
 		scissor = new SubmersibleFlywheelIntake(hardwareMap);
-		scissor.setTeamColour(TeamColor.red);
+		scissor.setTeamColour(FTCConstants.TeamColor.red);
 	}
 
 	@Override
