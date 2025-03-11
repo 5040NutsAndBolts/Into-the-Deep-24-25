@@ -36,7 +36,7 @@ public class ChamberFlywheelDeposit {
 		limitSwitch = new LimitSwitch(hardwareMap, "Wheel Limit Switch");
 
 		topController = new PID(.028,0.000006,.00, this::getTopPosition, 1);
-		bottomController = new PID(.028,0,.00, this::getBottomPosition, 1);
+		bottomController = new PID(.028,0.000006,.00, this::getBottomPosition, 1);
 	}
 
 	//Spin controls for triggers
@@ -74,12 +74,9 @@ public class ChamberFlywheelDeposit {
 
 	public void teleopControl (double in) {
 		double power = topController.teleOpControl(in);
-		if(limitSwitch.isPressed()) {
+		if(limitSwitch.isPressed())
 			resetPosition();
-			if(power < 0)
-				slideMotorTop.setPower(0);
-		}
-		if(topController.getTarget() > 1800) topController.setTarget(1800);
+
 		slideMotorBottom.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 		slideMotorBottom.setPower(0);
 		slideMotorTop.setPower(power);
@@ -139,10 +136,10 @@ public class ChamberFlywheelDeposit {
 	}
 
 	public void rawControl(double in) {
+		slideMotorBottom.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+		slideMotorBottom.setPower(0);
 		slideMotorTop.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-		if(in > 0 && limitSwitch.isPressed()) return;
-		else
-			slideMotorTop.setPower(in);
+		slideMotorTop.setPower(in);
 	}
 }
 

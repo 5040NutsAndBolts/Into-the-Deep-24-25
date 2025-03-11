@@ -17,21 +17,8 @@ public class TwoDriverTeleop extends RobotOpMode {
 	public void loop() {
 		drivetrain.drive (gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
 		drivetrain.toggleSlowMode(gamepad1.x);
-		if(gamepad2.x) { //Auto-retract scissor
-			scissor.setTarget(0);
-			subWheel.tiltCarriage(true,false);
-		}
 
-		if(gamepad2.dpad_up) {//Use counter-stringing for downforce
-			chamberWheel.setBottomTarget((int) chamberWheel.getBottomPosition()-50);
-			chamberWheel.slideMotorTop.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-			chamberWheel.slideMotorTop.setPower(-.3);
-		}else {
-			chamberWheel.setBottomTarget(0);
-			chamberWheel.slideMotorTop.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-			chamberWheel.rawControl(-gamepad2.left_stick_y);
-		}
-		chamberWheel.updateBottomMotor();
+		chamberWheel.rawControl(gamepad2.left_stick_y);
 		chamberWheel.spin(gamepad2.left_trigger,gamepad2.right_trigger);
 
 		scissor.updateScissor(-gamepad2.right_stick_y);
