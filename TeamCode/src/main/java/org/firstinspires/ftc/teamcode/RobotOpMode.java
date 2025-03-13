@@ -41,16 +41,6 @@ public class RobotOpMode extends OpMode {
         dashboard.update();
     }
 
-    protected void addTelemetry (String data) {
-        dashboard.addLine(data);
-        telemetry.addLine(data);
-    }
-
-    protected void updateTelemetry() {
-        dashboard.update();
-        telemetry.update();
-    }
-
     //Leave empty
     @Override public void loop() {}
 }

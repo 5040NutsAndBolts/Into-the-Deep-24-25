@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.HelperClasses.Camera;
 
-@Autonomous(name = "Right NC", group = "Autonomous")
+@Autonomous(name = "Right", group = "Autonomous")
 public class Right extends AutoOpMode {
 	@Override
 	public void loop() {

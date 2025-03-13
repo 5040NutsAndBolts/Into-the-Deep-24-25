@@ -5,11 +5,14 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+
+import org.firstinspires.ftc.teamcode.HelperClasses.Odometry.Odometry;
+
 public class Drivetrain {
     public final DcMotorEx frontLeft,frontRight,backLeft,backRight;
     public double speed = 1;
 
-    public Drivetrain(HardwareMap hardwareMap) {
+    public Drivetrain(@NonNull HardwareMap hardwareMap) {
         //Drive Motor Initialization
         frontLeft = hardwareMap.get(DcMotorEx.class, "Front Left");
         frontRight = hardwareMap.get(DcMotorEx.class, "Front Right");
@@ -25,7 +28,7 @@ public class Drivetrain {
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
-    public void drive(double forward, double sideways, double rotation) {
+    public void robotOrientedDrive(double forward, double sideways, double rotation) {
         //Multiplied by speed variable, only changes when in slowmode
         forward *= speed;
         sideways *= speed;
@@ -54,6 +57,31 @@ public class Drivetrain {
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+    }
+
+    public void fieldOrientedDrive(double x, double y, double rotation, @NonNull Odometry odo) {
+        double P = Math.hypot(y, x);
+        double robotAngle = Math.atan2(x, y);
+
+        // Get the current field heading from the GoBILDA Pinpoint
+        double fieldHeading = odo.getPinpoint().getHeading();
+
+        // Adjusted motor power calculations using the correct heading reference
+        double v5 = P * Math.sin(robotAngle - fieldHeading) + P * Math.cos(robotAngle - fieldHeading) - rotation;
+        double v6 = P * Math.sin(robotAngle - fieldHeading) - P * Math.cos(robotAngle - fieldHeading) + rotation;
+        double v7 = P * Math.sin(robotAngle - fieldHeading) - P * Math.cos(robotAngle - fieldHeading) - rotation;
+        double v8 = P * Math.sin(robotAngle - fieldHeading) + P * Math.cos(robotAngle - fieldHeading) + rotation;
+
+        double scale = Math.max(Math.abs(v5), Math.max(Math.abs(v6), Math.max(Math.abs(v7), Math.abs(v8))));
+        v5 /= scale;
+        v6 /= scale;
+        v7 /= scale;
+        v8 /= scale;
+
+        frontLeft.setPower(v5);
+        frontRight.setPower(v6);
+        backLeft.setPower(v7);
+        backRight.setPower(v8);
     }
 
     //Silly button logic stuff

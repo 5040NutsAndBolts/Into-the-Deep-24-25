@@ -44,20 +44,20 @@ public class BlueLeft extends AutoOpMode
 
 
 				if (Camera.screenPosition.x < 397 && spec == specPosition.isNotFound)
-							drivetrain.drive(0,0.1,0);
+							drivetrain.robotOrientedDrive(0,0.1,0);
 				if (Camera.screenPosition.x > 403 && spec == specPosition.isNotFound)
-					drivetrain.drive(0,-0.1,0);
+					drivetrain.robotOrientedDrive(0,-0.1,0);
 
 
 					while (Camera.screenPosition.x >= 397 && Camera.screenPosition.x <= 403) {
 							spec = specPosition.isFound;
 					}
 					while (spec == specPosition.isFound){
-						drivetrain.drive(-0.3,0,0);
+						drivetrain.robotOrientedDrive(-0.3,0,0);
 						if (Camera.screenPosition.x <= 395)
-							drivetrain.drive(0,0.1,0);
+							drivetrain.robotOrientedDrive(0,0.1,0);
 						if (Camera.screenPosition.x >= 405)
-							drivetrain.drive(0,-0.1,0);
+							drivetrain.robotOrientedDrive(0,-0.1,0);
 					}
 
 

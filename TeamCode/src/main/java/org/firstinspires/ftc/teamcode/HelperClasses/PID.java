@@ -12,7 +12,7 @@ public class PID {
 	/**
 	 * Creates a PID controller
 	 * @param kp Proportional gain (Gets near position faster, more prone to overshoot)
-	 * @param ki Integral gain (Decreases steady-state error, more oscillative)
+	 * @param ki Integral gain (Decreases steady-state error, more oscillative, less responsive)
 	 * @param kd Derivative gain (Reduces overshoot and smooths response)
 	 * @param getCurrent Function that returns the current value of the variable being controlled
 	 * @param teleopGain adjust rate of change of target based on stickPower in teleopControl()
@@ -26,12 +26,48 @@ public class PID {
 		lastTime = System.currentTimeMillis();
 	}
 
+	//Barebones,mostly for autos (ts)
+	public PID (double kp, double ki, double kd) {
+		this.kp = kp;
+		this.ki = ki;
+		this.kd = kd;
+		lastTime = System.currentTimeMillis();
+		getCurrent = null;
+		teleopGain = 0;
+	}
+
 	//Calculates power output
 	private double calculate() {
 		double currentPosition = getCurrent.get();
 
 		//If deltaTime is too small, return last output to minimize floating point errors
-		if(deltaTime < 10)
+		if(deltaTime < 5)
+			return lastOutput;
+
+
+		double currentError = currentTarget - currentPosition;
+		errorSum += currentError;
+
+		//Instantaneous error
+		double Proportional = kp * currentError;
+		//Error over time
+		double Integral = ki * errorSum;
+		//Rate of change of error
+		double Derivative = kd * (currentError - lastError) / deltaTime;
+
+		double output = Proportional + Integral + Derivative;
+
+		//Update persistent values
+		lastError = currentError;
+		lastOutput = output;
+		lastTime = System.currentTimeMillis();
+
+		currentOutput = output;
+		return output;
+	}
+	private double calculate(double currentPosition) {
+		//If deltaTime is too small, return last output to minimize floating point errors
+		if(deltaTime < 5)
 			return lastOutput;
 
 
@@ -69,6 +105,10 @@ public class PID {
 	public double autoControl () {
 		updateDeltaTime();
 		return calculate();
+	}
+	public double autoControl (double current) {
+		updateDeltaTime();
+		return calculate(current);
 	}
 
 	/**

@@ -1,7 +1,8 @@
 package org.firstinspires.ftc.teamcode.HelperClasses.TestOpModes;
 
+@SuppressWarnings("unused")
 public class FTCConstants {
 	public enum TeamColor {
-		red, blue, noColor
+		red, blue, yellow, noColor
 	}
 }

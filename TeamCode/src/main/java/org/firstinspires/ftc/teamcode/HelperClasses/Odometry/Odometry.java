@@ -20,13 +20,18 @@ public class Odometry {
 
         //THIS WILL CHANGE WITH EVERY DRIVETRAIN!
         //Offsets of each pod from the center of the robot (in mm)
-        pinpoint.setOffsets(0,0);
+        //lat3par2
+        pinpoint.setOffsets(3,2);
 
         //Recalibrate IMU
         pinpoint.resetPosAndIMU();
 
         //Ensure that we start  at 0,0
         pinpoint.setPosition(new Pose2D(DistanceUnit.INCH,0,0, AngleUnit.DEGREES,0));
+    }
+
+    public Pose2D getPosition () {
+        return pinpoint.getPosition();
     }
 
     public GoBildaPinpointDriver getPinpoint() {
@@ -49,8 +54,8 @@ public class Odometry {
     public String toString() {
         return "Odometry:\n" +
                 "Status: " + pinpoint.getDeviceStatus() + "\n" +
-                "X: " + pinpoint.getPosX() + "\n" +
-                "Y: " + pinpoint.getPosY() + "\n" +
-                "Heading: " + pinpoint.getHeading();
+                "X: " + (pinpoint.getPosX() * .0393700787) + "\n" +
+                "Y: " + (pinpoint.getPosY() * .0393700787) + "\n" +
+                "Heading: " + Math.toDegrees(pinpoint.getHeading());
     }
 }
