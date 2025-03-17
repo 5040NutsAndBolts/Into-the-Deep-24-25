@@ -1,11 +1,11 @@
 package org.firstinspires.ftc.teamcode.Mechanisms;
-import androidx.annotation.NonNull;
 
+import org.firstinspires.ftc.teamcode.HelperClasses.FTCConstants;
+import androidx.annotation.NonNull;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-
 import org.firstinspires.ftc.teamcode.HelperClasses.Odometry.Odometry;
 
 public class Drivetrain {
@@ -29,6 +29,8 @@ public class Drivetrain {
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
     public void robotOrientedDrive(double forward, double sideways, double rotation) {
+
+
         //Multiplied by speed variable, only changes when in slowmode
         forward *= speed;
         sideways *= speed;
@@ -60,6 +62,10 @@ public class Drivetrain {
     }
 
     public void fieldOrientedDrive(double x, double y, double rotation, @NonNull Odometry odo) {
+        x = FTCConstants.clamp(x, -1, 1);
+        y = FTCConstants.clamp(y, -1, 1);
+        rotation = FTCConstants.clamp(rotation, -1, 1);
+
         double P = Math.hypot(y, x);
         double robotAngle = Math.atan2(x, y);
 

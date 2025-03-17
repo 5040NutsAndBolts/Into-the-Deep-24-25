@@ -5,8 +5,6 @@ import androidx.annotation.NonNull;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.HelperClasses.TestOpModes.FTCConstants;
-
 public class ColourSensor {
     private final ColorSensor colorSensor;
 

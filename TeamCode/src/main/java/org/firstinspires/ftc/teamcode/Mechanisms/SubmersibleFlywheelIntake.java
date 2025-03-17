@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import com.qualcomm.robotcore.hardware.*;
 
 import org.firstinspires.ftc.teamcode.HelperClasses.ColourSensor;
-import org.firstinspires.ftc.teamcode.HelperClasses.TestOpModes.FTCConstants;
+import org.firstinspires.ftc.teamcode.HelperClasses.FTCConstants;
 
 public class SubmersibleFlywheelIntake {
 	private final CRServo leftIntakeServo, rightIntakeServo;
