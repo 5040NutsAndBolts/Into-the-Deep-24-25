@@ -7,17 +7,17 @@ import org.firstinspires.ftc.teamcode.HelperClasses.PID;
 
 public class Scissor {
 	public final DcMotor scissorMotor;
-	private final LimitSwitch minimumSwitch, maximumSwitch;
+	private final LimitSwitch minimumSwitch;//, maximumSwitch;
 	private int scissorMotorOffset;
 	private final PID scissorController;
 
 	public Scissor (@NonNull HardwareMap hardwareMap) {
 		scissorMotor = hardwareMap.get(DcMotor.class, "Scissor Motor");
 		minimumSwitch = new LimitSwitch(hardwareMap, "Min Scissor Switch");
-		maximumSwitch = new LimitSwitch(hardwareMap, "Max Scissor Switch");
+		//maximumSwitch = new LimitSwitch(hardwareMap, "Max Scissor Switch");
 		scissorMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 		scissorMotorOffset = scissorMotor.getCurrentPosition();
-		scissorController = new PID(.008, 0.00001, 0, this::getPosition, 1);
+		scissorController = new PID(.03, 0.00003, 0, this::getPosition, 1);
 	}
 
 	public void updateScissor (double in) {
@@ -29,17 +29,10 @@ public class Scissor {
 		if (minimumSwitch.isPressed()) {
 			resetPosition();
 			scissorController.setTarget(0);
-			power = scissorController.teleOpControl(in);
-		}
-		if(getPosition() < 0 && in == 0){
-			scissorController.setTarget(0);
-		}
-		if(getPosition() < 30 && getPosition() > 8 && in == 0 && scissorController.getTarget() == 0 && getPosition() != 0 && !minimumSwitch.isPressed()) {
-			power = -.3;
 		}
 		if(scissorController.getTarget() > 360) {
 			scissorController.setTarget(360);
-			power = scissorController.autoControl();
+			power = -.1;
 		}
 		scissorMotor.setPower(power);
 	}
@@ -63,7 +56,6 @@ public class Scissor {
 				"Scissor Position Offset: " + scissorMotorOffset + "\n" +
 				"Scissor Power: " + scissorMotor.getPower() + "\n" +
 				"Min Switch: " + minimumSwitch.isPressed() + "\n" +
-				"Max Switch: " + maximumSwitch.isPressed() + "\n" +
 				scissorController.toString();
 	}
 }

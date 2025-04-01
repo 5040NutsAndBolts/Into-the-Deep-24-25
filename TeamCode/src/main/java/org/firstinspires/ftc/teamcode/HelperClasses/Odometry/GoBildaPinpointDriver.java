@@ -461,7 +461,9 @@ public class GoBildaPinpointDriver extends I2cDeviceSynchDevice<I2cDeviceSynchSi
 	/**
 	 * @return the estimated H (heading) position of the robot in Radians
 	 */
-	public double getHeading(){return hOrientation;}
+	public double getHeading(){
+		return hOrientation;
+	}
 
 	/**
 	 * @return the estimated X (forward) velocity of the robot in mm/sec

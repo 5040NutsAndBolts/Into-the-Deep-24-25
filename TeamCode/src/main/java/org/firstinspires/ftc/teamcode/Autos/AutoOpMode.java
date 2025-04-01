@@ -70,28 +70,53 @@ public class AutoOpMode extends RobotOpMode {
         }
     }
 
+    boolean gonce = false;
     protected void moveTo (@NonNull Pose2D target) {
-        PID rotationController = new PID(.007, 0.001, 0);
-        PID xController = new PID(.25, 0.0017, 0);
-        PID yController = new PID(.25, 0.0017, 0);
+        PID rotationController = new PID(0.033 , 1.3e-6, 0);
+        PID xController = new PID(.07, .85e-5, 0);
+        PID yController = new PID(.08, 1.55e-5, 0);
         xController.setTarget(target.getX(DistanceUnit.INCH));
         yController.setTarget(target.getY(DistanceUnit.INCH));
         rotationController.setTarget(target.getHeading(AngleUnit.DEGREES));
-        while(!poseWithin(odo.getPosition(), target, .05, .5)) {
+        double rot = -FTCConstants.clamp(rotationController.autoControl(Math.toDegrees(odo.getPinpoint().getHeading())),-1,1);
+        double x =FTCConstants.clamp(xController.autoControl(odo.getPinpoint().getPosX()/25.4),-1,1);
+        double y = FTCConstants.clamp(yController.autoControl(odo.getPinpoint().getPosY()/25.4),-1,1);
+        ElapsedTime e = new ElapsedTime();
+        while (e.seconds() < 8 && !gonce) {
             odo.update();
+            dashboard.addData("rC", rot);
+            dashboard.addData("xC", x);
+            dashboard.addData("yC", y);
+            dashboard.addData("rE",(FTCConstants.clamp(Math.toDegrees(odo.getPinpoint().getHeading()) - rotationController.getTarget(),-1,1)));
+            dashboard.addData("xE", FTCConstants.clamp(odo.getPinpoint().getPosX()/25.4 - xController.getTarget(),-1,1));
+            dashboard.addData("yE", FTCConstants.clamp(odo.getPinpoint().getPosY()/25.4 - yController.getTarget(),-1,1));
+            updateAutoTelemetry();
+        }
+        gonce = true;
+        ElapsedTime a = new ElapsedTime();
+        while(!poseWithin(odo.getPosition(), target, 2, 5)) {
+            if(a.seconds() > .6)
+                return;
+            odo.update();
+            rot = -FTCConstants.clamp(rotationController.autoControl(Math.toDegrees(odo.getPinpoint().getHeading())),-1,1);
+            x =FTCConstants.clamp(xController.autoControl(odo.getPinpoint().getPosX()/25.4),-1,1);
+            y = FTCConstants.clamp(yController.autoControl(odo.getPinpoint().getPosY()/25.4),-1,1);
             telemetry.addLine(rotationController.toString());
             telemetry.addLine(xController.toString());
             telemetry.addLine(yController.toString());
-            dashboard.addLine(rotationController.toString());
-            dashboard.addLine(xController.toString());
-            dashboard.addLine(yController.toString());
+            dashboard.addData("rC", rot);
+            dashboard.addData("xC", x);
+            dashboard.addData("yC", y);
+            dashboard.addData("rE", Math.toDegrees(odo.getPinpoint().getHeading()) - rotationController.getTarget());
+            dashboard.addData("xE", odo.getPinpoint().getPosX()/25.4 - xController.getTarget());
+            dashboard.addData("yE", odo.getPinpoint().getPosY()/25.4 - yController.getTarget());
             dashboard.addLine();
             dashboard.addLine();
             updateAutoTelemetry();
             drivetrain.fieldOrientedDrive(
-                    xController.autoControl(odo.getPosition().getX(DistanceUnit.INCH)),
-                    yController.autoControl(odo.getPosition().getY(DistanceUnit.INCH)),
-                     -rotationController.autoControl(odo.getPosition().getHeading(AngleUnit.DEGREES)),
+                    x,
+                    y,
+                    rot,
                     odo
             );
         }

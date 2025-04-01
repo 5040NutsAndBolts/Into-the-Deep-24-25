@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.Mechanisms;
 
-import org.firstinspires.ftc.teamcode.HelperClasses.FTCConstants;
 import androidx.annotation.NonNull;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -61,28 +60,17 @@ public class Drivetrain {
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
     }
 
-    public void fieldOrientedDrive(double x, double y, double rotation, @NonNull Odometry odo) {
-        x = FTCConstants.clamp(x, -1, 1);
-        y = FTCConstants.clamp(y, -1, 1);
-        rotation = FTCConstants.clamp(rotation, -1, 1);
+    //field oriented drive
+    public void fieldOrientedDrive(double forward, double sideways, double rotation, Odometry odo) {
+        double P = Math.hypot(sideways, forward);
+        double currentAngle = odo.getPinpoint().getHeading();
 
-        double P = Math.hypot(y, x);
-        double robotAngle = Math.atan2(x, y);
+        double robotAngle = Math.atan2(forward, sideways);
 
-        // Get the current field heading from the GoBILDA Pinpoint
-        double fieldHeading = odo.getPinpoint().getHeading();
-
-        // Adjusted motor power calculations using the correct heading reference
-        double v5 = P * Math.sin(robotAngle - fieldHeading) + P * Math.cos(robotAngle - fieldHeading) - rotation;
-        double v6 = P * Math.sin(robotAngle - fieldHeading) - P * Math.cos(robotAngle - fieldHeading) + rotation;
-        double v7 = P * Math.sin(robotAngle - fieldHeading) - P * Math.cos(robotAngle - fieldHeading) - rotation;
-        double v8 = P * Math.sin(robotAngle - fieldHeading) + P * Math.cos(robotAngle - fieldHeading) + rotation;
-
-        double scale = Math.max(Math.abs(v5), Math.max(Math.abs(v6), Math.max(Math.abs(v7), Math.abs(v8))));
-        v5 /= scale;
-        v6 /= scale;
-        v7 /= scale;
-        v8 /= scale;
+        double v5 = P * Math.sin(robotAngle - currentAngle) + P * Math.cos(robotAngle - currentAngle) - rotation;
+        double v6 = P * Math.sin(robotAngle - currentAngle) - P * Math.cos(robotAngle - currentAngle) + rotation;
+        double v7 = P * Math.sin(robotAngle - currentAngle) - P * Math.cos(robotAngle - currentAngle) - rotation;
+        double v8 = P * Math.sin(robotAngle - currentAngle) + P * Math.cos(robotAngle - currentAngle) + rotation;
 
         frontLeft.setPower(v5);
         frontRight.setPower(v6);

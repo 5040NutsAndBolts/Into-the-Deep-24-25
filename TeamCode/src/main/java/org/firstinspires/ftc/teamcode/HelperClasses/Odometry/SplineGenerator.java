@@ -9,25 +9,34 @@ import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * @author Jack Harlow: Prog. Lead Into the Deep (24-25)
+ * HEADING CALCULATIONS STILL NEED WORK!!
+ */
 public class SplineGenerator {
 
+	/**
+	 *  Reflects the centroid of the triangle across its legs
+	 * @param p1 first point
+	 * @param p2 second point
+	 * @param centroidX centroid's x coordinate
+	 * @param centroidY centroid's y coordinate
+	 * @return Reflected point with respective heading
+	 */
 	@Nullable
 	private static Pose2D findReflectorsOfCentroid (@NonNull Pose2D p1, Pose2D p2, double centroidX, double centroidY) {
-		if(p1.equals(p2))
+		if(p1.equals(p2)) // If the points are the same, return null so that we can later remove them
 			return null;
 		else if(p1.getX(DistanceUnit.INCH) == p2.getX(DistanceUnit.INCH))
-			if(p1.getY(DistanceUnit.INCH) == p2.getY(DistanceUnit.INCH))
+			if(p1.getY(DistanceUnit.INCH) == p2.getY(DistanceUnit.INCH)) //If the X and Y are the same, only change the heading
 				return new Pose2D(DistanceUnit.INCH, p1.getX(DistanceUnit.INCH), p1.getY(DistanceUnit.INCH), AngleUnit.DEGREES,(p1.getHeading(AngleUnit.RADIANS) + p2.getHeading(AngleUnit.RADIANS)) / 2);
-			else
+			else //If they X is the same, find the Y midpoint and change the heading
 				return new Pose2D(DistanceUnit.INCH, p1.getX(DistanceUnit.INCH), (p1.getY(DistanceUnit.INCH) + p2.getY(DistanceUnit.INCH) / 2), AngleUnit.DEGREES,(p1.getHeading(AngleUnit.RADIANS) + p2.getHeading(AngleUnit.RADIANS)) / 2);
-		else if (p1.getY(DistanceUnit.INCH) == p2.getY(DistanceUnit.INCH))
-			if(p1.getX(DistanceUnit.INCH) == p2.getX(DistanceUnit.INCH))
-				return new Pose2D(DistanceUnit.INCH, p1.getX(DistanceUnit.INCH), p1.getY(DistanceUnit.INCH), AngleUnit.DEGREES,(p1.getHeading(AngleUnit.RADIANS) + p2.getHeading(AngleUnit.RADIANS)) / 2);
-			else
+		else if (p1.getY(DistanceUnit.INCH) == p2.getY(DistanceUnit.INCH)) //If only Y is change (if X is same as Y it is handled in above case) change X and heading
 				return new Pose2D(DistanceUnit.INCH, (p1.getX(DistanceUnit.INCH) + p2.getX(DistanceUnit.INCH) / 2), p1.getY(DistanceUnit.INCH), AngleUnit.DEGREES,(p1.getHeading(AngleUnit.RADIANS) + p2.getHeading(AngleUnit.RADIANS)) / 2);
-		else if (p1.getHeading(AngleUnit.RADIANS) == p2.getHeading(AngleUnit.RADIANS))
+		else if (p1.getHeading(AngleUnit.RADIANS) == p2.getHeading(AngleUnit.RADIANS))//If heading is the same, just find midpoint of X and Y
 			return new Pose2D(DistanceUnit.INCH, (p1.getX(DistanceUnit.INCH) + p2.getX(DistanceUnit.INCH) / 2), (p1.getY(DistanceUnit.INCH) + p2.getY(DistanceUnit.INCH) / 2), AngleUnit.DEGREES,p1.getHeading(AngleUnit.RADIANS));
-		else {
+		else { //Calculate actual centroid reflecting
 			double slope = Math.abs(p1.getY(DistanceUnit.INCH) - p2.getY(DistanceUnit.INCH))/Math.abs(p1.getX(DistanceUnit.INCH) - p2.getX(DistanceUnit.INCH));
 			double yIntercept = p1.getY(DistanceUnit.INCH) - (slope * p1.getX(DistanceUnit.INCH));
 			double xF = (centroidX + slope * (centroidY - yIntercept)) / (1 + slope * slope);
@@ -42,6 +51,12 @@ public class SplineGenerator {
 		}
 	}
 
+	/**
+	 * General spline calculation method
+	 * Finds centroid of triangle and maps to new ArrayList (toret)
+	 * @param poses rough positions given by user
+	 * @return calculated spline path
+	 */
 	@NonNull
 	private static ArrayList<Pose2D> calculateSplines(@NonNull ArrayList<Pose2D> poses) {
 		ArrayList<Pose2D> toret = new ArrayList<>();
@@ -70,6 +85,11 @@ public class SplineGenerator {
 		return toret;
 	}
 
+	/**
+	 * "pulls" the point of a triangle closer to its hypotenuse, thus "smoothening" the path
+	 * @param poses list of calculated splines
+	 * @return smoothened spline path
+	 */
 	@NonNull
 	private static ArrayList<Pose2D> smoothen (@NonNull ArrayList<Pose2D> poses) {
 		ArrayList<Pose2D> toret = new ArrayList<>();
@@ -93,6 +113,14 @@ public class SplineGenerator {
 		}
 		return toret;
 	}
+
+	/**
+	 * User-accessible method for generating a spline path
+	 * @param poses List of rough positions given by user
+	 * @param dFactor How many times to re-calculate the splines
+	 * @param sFactor How many times to smoothen the splines
+	 * @return huzz
+	 */
 	public static ArrayList<Pose2D> generateSpline(ArrayList<Pose2D> poses, int dFactor, int sFactor) {
 		ArrayList<Pose2D> toret = new ArrayList<>(poses);
 		for(int i = 0; i < dFactor; i++)

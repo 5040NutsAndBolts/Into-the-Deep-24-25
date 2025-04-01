@@ -5,7 +5,9 @@ import java.util.function.Supplier;
 
 public class PID {
 	private final double kp, ki, kd,  teleopGain;
-	private double lastTime, deltaTime, currentTarget, errorSum, lastOutput, lastError;
+	private double currentTarget, errorSum, lastOutput, lastError;
+	private long lastTime;
+	private int deltaTime;
 	private double currentOutput;
 	private final Supplier<Double> getCurrent;
 
@@ -122,7 +124,7 @@ public class PID {
 	//Subtract current time from last time to get delta time
 	private void updateDeltaTime() {
 		long cur = System.currentTimeMillis();
-		deltaTime = cur - lastTime;
+		deltaTime = (int) (cur - lastTime);
 		lastTime = cur;
 	}
 

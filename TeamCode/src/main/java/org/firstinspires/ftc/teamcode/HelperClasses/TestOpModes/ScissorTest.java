@@ -12,7 +12,6 @@ public class ScissorTest extends OpMode {
 	@Override
 	public void init() {
 		scissor = new SubmersibleFlywheelIntake(hardwareMap);
-		scissor.setTeamColour(FTCConstants.TeamColor.red);
 	}
 
 	@Override

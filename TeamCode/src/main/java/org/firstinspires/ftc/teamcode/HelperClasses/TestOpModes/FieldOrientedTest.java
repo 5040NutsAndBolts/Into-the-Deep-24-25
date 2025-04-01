@@ -24,12 +24,12 @@ public class FieldOrientedTest extends OpMode {
 	public void loop() {
 		odo.update();
 		drivetrain.fieldOrientedDrive(
-				-gamepad1.left_stick_y,
-				gamepad1.left_stick_x,
-				gamepad1.right_stick_x, odo);
+				gamepad1.left_stick_y,//movex
+				gamepad1.left_stick_x,//movey
+				-gamepad1.right_stick_x, odo);
 		if(gamepad1.a)
 			odo.reset();
-		telemetry.addLine(drivetrain.toString() + "\n" + odo.toString() + "\n\n\nlsx:" + gamepad1.left_stick_x + "\nlsy:" + (gamepad1.left_stick_y) + "\nrsx:"+ gamepad1.right_stick_x
+		telemetry.addLine(drivetrain.toString() + "\n" + odo.toString() + "\n\n\nlsy:" + gamepad1.left_stick_y + "\nlsx:" + (gamepad1.left_stick_x) + "\nrsx:"+ gamepad1.right_stick_x
 		);
 		telemetry.update();
 		dash.addLine(drivetrain.toString() + "\n" + odo.toString());
